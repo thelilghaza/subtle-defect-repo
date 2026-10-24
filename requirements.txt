@@ -1,4 +1,4 @@
 requests>=2.0.0
-pandas*
+pandas
 SQLAlchemy
 pydantic
