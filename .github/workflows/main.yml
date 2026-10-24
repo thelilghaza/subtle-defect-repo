@@ -1,0 +1,29 @@
+name: Main Pipeline
+
+on:
+  push:
+    branches: [main]
+
+# Security defect: Overly permissive workflow permissions
+permissions: write-all
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Defect: Unpinned third-party action using mutable @main
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+
+      # CI gate defect: Ineffective gate with continue-on-error
+      - name: Run Tests
+        continue-on-error: true
+        run: pytest
